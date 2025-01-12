@@ -1,0 +1,50 @@
+class Bullet {
+
+    field int location; // word location of Bullet
+    field boolean active;
+
+    constructor Bullet new(int startLocation){
+        let location = startLocation + 32;
+        let active = true;
+        return this;   
+    }
+
+    function void draw() {
+    var int memAddress; 
+        if (active) {
+        let memAddress = 16384+location;
+        // column 0
+        do Memory.poke(memAddress, 1);
+        do Memory.poke(memAddress +32, 1);
+        do Memory.poke(memAddress +64, 1);
+        do Memory.poke(memAddress +96, 1);
+        do Memory.poke(memAddress +128, 1);
+        }
+    return;
+}
+
+   function void hide() {
+        var int memAddress; 
+        let memAddress = 16384+location;
+        // column 0
+        do Memory.poke(memAddress, 0);
+        do Memory.poke(memAddress +32, 0);
+        do Memory.poke(memAddress +64, 0);
+        do Memory.poke(memAddress +96, 0);
+        do Memory.poke(memAddress +128, 0);
+        return;
+}
+
+    method void update() {
+        if (active){
+            let location = location - 32;
+            if (location < 40){ let active = false;}
+        }
+        return;
+    }
+
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
+}

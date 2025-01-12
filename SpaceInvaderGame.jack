@@ -1,0 +1,43 @@
+class SpaceInvaderGame {
+
+    field Shooter shooter;  // shooter sprite
+    field int direction;    // director of shooter
+    field Array bullets; // array of bullets
+    field int bulletCount; //number of active bullets
+
+
+    constructor SpaceInvaderGame new() {
+        let shooter = Shooter.new();
+        let direction = 0;
+        return this;
+    }
+
+    /** creates new bullet */
+    method void fire() {
+        var Bullet bullet;
+        let bullet = Bullet.new(location)
+    }
+
+    method void run() {
+        var char key;
+        var boolean quit ;
+        let quit = false;
+
+        while (~(quit)){
+            let key = Keyboard.keyPressed();
+            do shooter.move(direction);
+            if (key = 81) { let quit = true;}
+            if (key = 130) {  do shooter.move(1); do Sys.wait(150);}
+            if (key = 132) {  do shooter.move(2); do Sys.wait(150);}
+            do Sys.wait(5);
+        }
+        return;
+    }
+
+ /** Deallocates the object's memory. */
+    method void dispose() {
+        do shooter.dispose();
+        do Memory.deAlloc(this);
+        return;
+    }
+}

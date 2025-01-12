@@ -1,0 +1,85 @@
+function SpaceInvaderGame.new 0
+    push constant 2
+    call Memory.alloc 1
+    pop pointer 0
+    call Shooter.new 0
+    pop this 0
+    push constant 0
+    pop this 1
+    push pointer 0
+    return
+function SpaceInvaderGame.run 2
+    push argument 0
+    pop pointer 0
+    push constant 0
+    pop local 1
+label SpaceInvaderGame_0
+    push local 1
+    not
+    not
+    if-goto SpaceInvaderGame_1
+    call Keyboard.keyPressed 0
+    pop local 0
+    push this 0
+    push this 1
+    call Shooter.move 2
+    pop temp 0
+    push local 0
+    push constant 81
+    eq
+    not
+    if-goto SpaceInvaderGame_3
+    push constant 1
+    neg
+    pop local 1
+    goto SpaceInvaderGame_2
+label SpaceInvaderGame_3
+label SpaceInvaderGame_2
+    push local 0
+    push constant 130
+    eq
+    not
+    if-goto SpaceInvaderGame_5
+    push this 0
+    push constant 1
+    call Shooter.move 2
+    pop temp 0
+    push constant 250
+    call Sys.wait 1
+    pop temp 0
+    goto SpaceInvaderGame_4
+label SpaceInvaderGame_5
+label SpaceInvaderGame_4
+    push local 0
+    push constant 132
+    eq
+    not
+    if-goto SpaceInvaderGame_7
+    push this 0
+    push constant 2
+    call Shooter.move 2
+    pop temp 0
+    push constant 250
+    call Sys.wait 1
+    pop temp 0
+    goto SpaceInvaderGame_6
+label SpaceInvaderGame_7
+label SpaceInvaderGame_6
+    push constant 5
+    call Sys.wait 1
+    pop temp 0
+    goto SpaceInvaderGame_0
+label SpaceInvaderGame_1
+    push constant 0
+    return
+function SpaceInvaderGame.dispose 0
+    push argument 0
+    pop pointer 0
+    push this 0
+    call Shooter.dispose 1
+    pop temp 0
+    push pointer 0
+    call Memory.deAlloc 1
+    pop temp 0
+    push constant 0
+    return

@@ -1,0 +1,105 @@
+class Shooter {
+    field int direction;  // direction of shooter 
+                        // (0=no movement, 1 = left, 2 = right)
+    field int location;  // word location
+  
+    constructor Shooter new() {
+        let location = 6062;
+        do draw();
+        return this;
+    }
+
+    method void dispose() {
+        do Memory.deAlloc(this);
+        return;
+        } 
+
+    method void draw() {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 4096);
+	do Memory.poke(memAddress +32, 4096);
+	do Memory.poke(memAddress +64, 4096);
+	do Memory.poke(memAddress +96, 4096);
+	do Memory.poke(memAddress +128, 10240);
+	do Memory.poke(memAddress +160, 14336);
+	do Memory.poke(memAddress +192, -512);
+	do Memory.poke(memAddress +224, -4608);
+	do Memory.poke(memAddress +256, -14848);
+	do Memory.poke(memAddress +288, -32);
+	do Memory.poke(memAddress +320, -32);
+	do Memory.poke(memAddress +352, -32);
+	do Memory.poke(memAddress +384, -8);
+	do Memory.poke(memAddress +416, -1);
+	do Memory.poke(memAddress +448, -1);
+	do Memory.poke(memAddress +480, -1);
+	// column 1
+	do Memory.poke(memAddress +289, 15);
+	do Memory.poke(memAddress +321, 15);
+	do Memory.poke(memAddress +353, 15);
+	do Memory.poke(memAddress +385, 31);
+	do Memory.poke(memAddress +417, 255);
+	do Memory.poke(memAddress +449, 255);
+	do Memory.poke(memAddress +481, 255);
+	return;
+}
+
+    method void hide() {
+	var int memAddress; 
+	let memAddress = 16384+location;
+	// column 0
+	do Memory.poke(memAddress, 0);
+	do Memory.poke(memAddress +32, 0);
+	do Memory.poke(memAddress +64, 0);
+	do Memory.poke(memAddress +96, 0);
+	do Memory.poke(memAddress +128, 0);
+	do Memory.poke(memAddress +160, 0);
+	do Memory.poke(memAddress +192, 0);
+	do Memory.poke(memAddress +224, 0);
+	do Memory.poke(memAddress +256, 0);
+	do Memory.poke(memAddress +288, 0);
+	do Memory.poke(memAddress +320, 0);
+	do Memory.poke(memAddress +352, 0);
+	do Memory.poke(memAddress +384, 0);
+	do Memory.poke(memAddress +416, 0);
+	do Memory.poke(memAddress +448, 0);
+	do Memory.poke(memAddress +480, 0);
+	// column 1
+	do Memory.poke(memAddress +289, 0);
+	do Memory.poke(memAddress +321, 0);
+	do Memory.poke(memAddress +353, 0);
+	do Memory.poke(memAddress +385, 0);
+	do Memory.poke(memAddress +417, 0);
+	do Memory.poke(memAddress +449, 0);
+	do Memory.poke(memAddress +481, 0);
+	return;
+}
+
+    method void move(int Adirection) {
+        /** no movement */
+        let direction = Adirection;
+        if (direction = 0){
+            return;
+        }
+        /** move left */
+	    if (direction = 1) {
+            do hide();
+            if (location < 6049) {let location = location;}
+            else {let location = location - 1;}
+            do draw();
+            return;
+        }
+        /** move right */
+        if (direction = 2) {
+            do hide();
+            if (location > 6077) {let location = location;}
+            else {let location = location + 1;}
+            do draw();
+            return;
+        }
+        return;
+    }
+
+    
+}
