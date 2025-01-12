@@ -4,40 +4,149 @@ class SpaceInvaderGame {
     field int direction;    // director of shooter
     field Array bullets; // array of bullets
     field int bulletCount; //number of active bullets
+    field Array invaders; // array of bullets
+    field int invaderCount; //number of active bullets
+    field int invaderAddCounter; // to decide when to add a new invader
 
 
     constructor SpaceInvaderGame new() {
         let shooter = Shooter.new();
         let direction = 0;
+        let bullets = Array.new(10);
+        let bulletCount = 0;
+        let invaders = Array.new(20);
+        let invaderCount = 0;
+        let invaderAddCounter = 0;
         return this;
     }
 
     /** creates new bullet */
     method void fire() {
         var Bullet bullet;
-        let bullet = Bullet.new(location)
+        if (bulletCount < 10){
+            let bullets[bulletCount] = Bullet.new(shooter.getLocation());
+            let bulletCount = bulletCount + 1;
+        }
+        return;
     }
+
+    /** updates the bullets */
+    method void updateBullets() {
+        var int i;
+        var Bullet bullet;
+        let i = 0;
+        while (i < bulletCount){
+            let bullet = bullets[i];
+            do bullet.update();
+            if (~bullet.isActive()){
+                let bulletCount = bulletCount - 1;
+                let bullets[i] = bullets[bulletCount];
+            }
+            else { let i = i + 1;}
+        }
+        return;
+    }
+
+    /** creates new invader */
+    method void launch_invader() {
+        if (invaderCount < 20){
+            let invaders[invaderCount] = Invader.new();
+            let invaderCount = invaderCount + 1;
+        }
+        return;
+    }
+
+    method void addInvaders(){
+        let invaderAddCounter = invaderAddCounter + 1;
+        if (Utils.modulo(invaderAddCounter, 50)){
+            do launch_invader();
+        }
+        return;
+    }
+
+    /** updates the invaders */
+    method void updateInvaders() {
+        var int j;
+        var Invader invader;
+        let j = 0;
+        while (j < invaderCount){
+            let invader = invaders[j];
+            do invader.update();
+            if (~invader.isActive()){
+                let invaderCount = invaderCount - 1;
+                let invaders[j] = invaders[invaderCount];
+            }
+            else { let j = j + 1;}
+        }
+        return;
+    }
+
+    /** check for collisions between bullets and invaders */
+    method void checkCollisions() {
+        var int i; // for looping invaders
+        var int j; // for looping bullets
+        var Invader invader;
+        var Bullet bullet;
+        let i = 0;
+        while (i < invaderCount){
+            let invader = invaders[i];
+            let j = 0;
+            while (j < bulletCount){
+                let bullet = bullets[j];
+                if (Utils.isHit(invader.getLocation(), bullet.getLocation())){
+                    do invader.setInActive();
+                    do invader.hide();
+                    let invaderCount = invaderCount - 1;
+                    let invaders[i] = invaders[invaderCount];
+                }
+                let j = j + 1;
+            }
+            let i = i + 1;
+        }
+        return;
+    }
+
 
     method void run() {
         var char key;
         var boolean quit ;
         let quit = false;
+        do launch_invader();
 
         while (~(quit)){
             let key = Keyboard.keyPressed();
             do shooter.move(direction);
             if (key = 81) { let quit = true;}
-            if (key = 130) {  do shooter.move(1); do Sys.wait(150);}
-            if (key = 132) {  do shooter.move(2); do Sys.wait(150);}
-            do Sys.wait(5);
+            if (key = 130) {  do shooter.move(1);}
+            if (key = 132) {  do shooter.move(2);}
+            if (key = 32 ) { do fire();}
+            do Sys.wait(150);
+            do updateBullets();
+            do addInvaders();
+            do checkCollisions();
+            do updateInvaders();
         }
         return;
     }
 
  /** Deallocates the object's memory. */
     method void dispose() {
+        var int i; // for looping invaders
+        var int j; // for looping bullets
+        var Invader invader;
+        var Bullet bullet;
         do shooter.dispose();
         do Memory.deAlloc(this);
+        let i = 0;
+        while (i < invaderCount){
+            let invader = invaders[i];
+            do invader.dispose();
+        }
+        let j = 0;
+        while (j < bulletCount){
+            let bullet = bullets[i];
+            do bullet.dispose();
+        }
         return;
     }
 }

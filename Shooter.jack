@@ -101,5 +101,9 @@ class Shooter {
         return;
     }
 
+    method void getLocation(){
+        return location;
+    }
+
     
 }

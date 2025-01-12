@@ -1,0 +1,29 @@
+class Utils {
+    function void modulo(int nom, int dem ){
+        var int result;
+        var int division;
+        var int numerator;
+        var int denominator;
+        let numerator = nom;
+        let denominator = dem;
+        let division = numerator / denominator;
+        let result = numerator - (denominator * division);
+        if (result = 0) { return true;}
+        else { return false; }
+    }
+
+    function void isHit(int Ainvader, int Abullet) {
+        var int invader; // location of invader
+        var int bullet; // location of bullet
+        var int distance;
+        var int abs_distance;
+        let invader = Ainvader;
+        let bullet = Abullet;
+        let distance = invader - bullet;
+        let abs_distance = Math.abs(distance);
+        if (abs_distance < 20){
+            return true;
+        }
+        return false; 
+    }
+}

@@ -1,0 +1,85 @@
+
+class Invader {
+
+    field int location; // word location of Bullet
+    field boolean active;
+
+    constructor Invader new(){
+        let location = 1;
+        let active = true;
+        do draw();
+        return this;   
+    }
+
+    method void draw() {
+    var int memAddress; 
+        if (active) {
+        let memAddress = 16384+location;
+        // column 0
+        do Memory.poke(memAddress, 2040);
+        do Memory.poke(memAddress +32, 4092);
+        do Memory.poke(memAddress +64, 8190);
+        do Memory.poke(memAddress +96, 15063);
+        do Memory.poke(memAddress +128, 14535);
+        do Memory.poke(memAddress +160, 16383);
+        do Memory.poke(memAddress +192, 7710);
+        do Memory.poke(memAddress +224, 3900);
+        do Memory.poke(memAddress +256, 3564);
+        do Memory.poke(memAddress +288, 2052);
+        do Memory.poke(memAddress +320, 3084);
+        return;
+}
+    return;
+}
+
+   method void hide() {
+        var int memAddress; 
+        let memAddress = 16384+location;
+        // column 0
+        do Memory.poke(memAddress, 0);
+        do Memory.poke(memAddress +32, 0);
+        do Memory.poke(memAddress +64, 0);
+        do Memory.poke(memAddress +96, 0);
+        do Memory.poke(memAddress +128, 0);
+        do Memory.poke(memAddress +160, 0);
+        do Memory.poke(memAddress +192, 0);
+        do Memory.poke(memAddress +224, 0);
+        do Memory.poke(memAddress +256, 0);
+        do Memory.poke(memAddress +288, 0);
+        do Memory.poke(memAddress +320, 0);
+        return;
+}
+
+    method void update() {
+        do hide();
+        if (active){
+            if (Utils.modulo(location, 32)) { let location = location + 257;}
+            else { let location = location + 1;}
+            if (location > 7000){ let active = false;}
+            do draw();
+        }
+         if (~active){
+            do dispose();
+        }
+        return;
+    }
+
+    method void dispose(){
+        do Memory.deAlloc(this);
+        return;
+    }
+
+    method void setInActive() {
+        let active = false; 
+        return;
+    }
+    
+
+    method void isActive(){
+        return active;
+    }
+
+    method void getLocation(){
+        return location;
+    }
+}

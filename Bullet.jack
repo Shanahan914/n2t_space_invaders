@@ -4,26 +4,29 @@ class Bullet {
     field boolean active;
 
     constructor Bullet new(int startLocation){
-        let location = startLocation + 32;
+        let location = startLocation - 319;
         let active = true;
+        do draw();
         return this;   
     }
 
-    function void draw() {
+    method void draw() {
     var int memAddress; 
         if (active) {
         let memAddress = 16384+location;
         // column 0
-        do Memory.poke(memAddress, 1);
-        do Memory.poke(memAddress +32, 1);
-        do Memory.poke(memAddress +64, 1);
-        do Memory.poke(memAddress +96, 1);
-        do Memory.poke(memAddress +128, 1);
-        }
+        do Memory.poke(memAddress, 3);
+        do Memory.poke(memAddress +32, 3);
+        do Memory.poke(memAddress +64, 3);
+        do Memory.poke(memAddress +96, 3);
+        do Memory.poke(memAddress +128, 3);
+        do Memory.poke(memAddress +160, 3);
+        return;
+}
     return;
 }
 
-   function void hide() {
+   method void hide() {
         var int memAddress; 
         let memAddress = 16384+location;
         // column 0
@@ -32,13 +35,19 @@ class Bullet {
         do Memory.poke(memAddress +64, 0);
         do Memory.poke(memAddress +96, 0);
         do Memory.poke(memAddress +128, 0);
+        do Memory.poke(memAddress +160, 0);
         return;
 }
 
     method void update() {
         if (active){
+            do hide();
             let location = location - 32;
             if (location < 40){ let active = false;}
+            do draw();
+        }
+        if (~active){
+            do  dispose();
         }
         return;
     }
@@ -46,5 +55,13 @@ class Bullet {
     method void dispose(){
         do Memory.deAlloc(this);
         return;
+    }
+
+    method void isActive(){
+        return active;
+    }
+
+    method void getLocation(){
+        return location;
     }
 }
